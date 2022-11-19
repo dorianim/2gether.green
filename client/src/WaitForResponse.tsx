@@ -1,8 +1,10 @@
 import { Button, TextField } from "@mui/material";
 import React from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import Funding from "./Funding";
+import CollapseAlert from "./CollapsableAlert";
 
-interface ProjectDetails {
+export interface ProjectDetails {
   id?: string;
   status?: string;
   construction_time?: number;
@@ -12,33 +14,44 @@ interface ProjectDetails {
   total_cost?: number;
 }
 
+export const projectDetailsMaps = new Map<string, string>([["construction_time", "Construction time"], ["cost_per_month", "Cost per month"], ["payoff_time", "Payoff time"], ["revenue_per_month", "Revenue per month"], ["total_cost", "Total cost"]]);
+
 
 export default function WaitForResponse() {
   const { projectId } = useParams();
   const [projectDetails, setProjectDetails] = React.useState<ProjectDetails>();
-  const amortisation = React.useRef(0)
+  const amortisation = React.useRef(0);
+  const [success, setSuccess] = React.useState(true);
 
   React.useEffect(() => {
     handleRefresh();
   }, []);
 
   const handleRefresh = async () => {
-    fetch("http://localhost:8000/api/v1/project/" + projectId).then((response) => {
+    fetch("http://localhost:8000/api/v1/project/" + projectId).then(async (response) => {
       if (response.ok) {
-        return response.json();
+        let data = await response.json();
+        setProjectDetails(data);
+        setSuccess(true);
+      } else {
+        setSuccess(false);
       }
-    }).then((data) => {
-      setProjectDetails(data);
+    }).catch((error) => {
+      setSuccess(false);
     });
   };
 
   const handleCalculate = async () => {
-    fetch("http://localhost:8000/api/v1/project/" + projectId + "/morgage_rate?amortisation=" + amortisation.current).then((response) => {
+    fetch("http://localhost:8000/api/v1/project/" + projectId + "/morgage_rate?amortisation=" + amortisation.current).then(async (response) => {
       if (response.ok) {
-        return response.json();
+        let data = await response.json();
+        setProjectDetails({ ...projectDetails, cost_per_month: data.cost_per_month, payoff_time: data.payoff_time });
+        setSuccess(true);
+      } else {
+        setSuccess(false);
       }
-    }).then((data) => {
-      setProjectDetails({ ...projectDetails, cost_per_month: data.cost_per_month, payoff_time: data.payoff_time });
+    }).catch((error) => {
+      setSuccess(false);
     });
   }
 
@@ -52,54 +65,69 @@ export default function WaitForResponse() {
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
       },
-    }).then((response) => {
+    }).then(async (response) => {
       if (response.ok) {
-        return response.json();
+        let data = await response.json();
+        setProjectDetails(data);
+        setSuccess(true);
+      } else {
+        setSuccess(false);
       }
-    }).then((data) => {
-      // Redirect to FUNDING page
-      setProjectDetails({ ...projectDetails, cost_per_month: data.cost_per_month, payoff_time: data.payoff_time });
+    }).catch((error) => {
+      setSuccess(false);
     });
   }
 
   return (
-    projectDetails?.status === "WaitingForApproval" ? 
-    (<div>
-      <h2>Success! We will check your request. </h2>
-      <h3>
-        This will may take a while. Please return to this page in a few days.
-      </h3>
-      <div className="submitButton">
-        <Button variant="contained" onClick={handleRefresh}>
-          Refresh
-        </Button>
-      </div>
-    </div>) : projectDetails?.status === "Approved" ? (
+    <>
+      <CollapseAlert
+        error={{
+          open: !success,
+          severity: "error",
+          message: "Something went wrong. Please try again later.",
+        }}
+        onClose={() => setSuccess(!success)}
+      />
+      { projectDetails?.status === "WaitingForApproval" ?
+      ( <div>
+        <h2>Success! We will check your request. </h2>
+        <h3>
+          This will may take a while. Please return to this page in a few days.
+        </h3>
+        <div className="submitButton">
+          <Button variant="contained" onClick={handleRefresh}>
+            Refresh
+          </Button>
+        </div>
+      </div>) : projectDetails?.status === "Approved" ? (
       <div>
         <h2>Your project has been approved!</h2>
         <p>Here is some data about your Project: </p>
-          <ul>
-            <li>Construction time: {projectDetails?.construction_time}</li>
-            <li>Cost per month: {projectDetails?.cost_per_month ?? "Please press calculate"}</li>
-            <li>Payoff time: {projectDetails?.payoff_time ?? "Please press calculate"}</li>
-            <li>Revenue per month: {projectDetails?.revenue_per_month}</li>
-            <li>Total cost: {projectDetails?.total_cost}</li>
-          </ul>
-          <p> Please specify an amortisation rate:</p>
-          <TextField
-              className="login-field"
-              label="Amortisation Rate"
-              variant="outlined"
-              onChange={(e) => amortisation.current = parseInt(e.target.value)}
-              fullWidth
-            />
-          <Button variant="contained" onClick={handleCalculate}>Calculate</Button>
-          <Button variant="contained" onClick={handleBeginFunding}>Begin funding</Button>
+        <ul>
+          <li>Construction time: {projectDetails?.construction_time}</li>
+          <li>Cost per month: {projectDetails?.cost_per_month ?? "Please press calculate"}</li>
+          <li>Payoff time: {projectDetails?.payoff_time ?? "Please press calculate"}</li>
+          <li>Revenue per month: {projectDetails?.revenue_per_month}</li>
+          <li>Total cost: {projectDetails?.total_cost}</li>
+        </ul>
+        <p> Please specify an amortisation rate:</p>
+        <TextField
+          className="login-field"
+          label="Amortisation Rate"
+          variant="outlined"
+          onChange={(e) => amortisation.current = parseInt(e.target.value)}
+          fullWidth
+        />
+        <Button variant="contained" onClick={handleCalculate}>Calculate</Button>
+        <Button variant="contained" onClick={handleBeginFunding}>Begin funding</Button>
       </div>
-    ) : (
+      ) : projectDetails?.status === "Funding" ? (
+      <Funding projectDetails={projectDetails}></Funding>
+      ) : (
       <div>
         <h2>Sorry, your project has been rejected.</h2>
       </div>
-    )
+      )}
+    </>
   );
 }

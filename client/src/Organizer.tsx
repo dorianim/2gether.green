@@ -107,7 +107,7 @@ export default function Organzier() {
             label="Category"
             fullWidth
           >
-            <MenuItem value="Windmill">Windmill</MenuItem>
+            <MenuItem value="Windturbine">Wind turbine</MenuItem>
             <MenuItem value="Solar">Solar panel</MenuItem>
           </Select>
         </FormControl>
