@@ -33,7 +33,7 @@ export default function Organzier() {
       method: "POST",
       body: JSON.stringify({
         zip_code: zipCode,
-        project_type: category === "Windmill" ? "Wind" : "Solar",
+        project_type: category === "Wind" ? "Wind" : "Solar",
       }),
     };
     try {

@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from "react";
-import ReportIcon from "@mui/icons-material/Report";
-import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
-import { Alert, Grid, List, ListItem, Typography } from "@mui/material";
+import { Grid, IconButton, Typography } from "@mui/material";
 import CollapsableAlert from "./CollapsableAlert";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Button from "@mui/material/Button";
 import OwnDialog from "./OwnDialog";
+import { Clear, Done } from "@mui/icons-material";
+
 export default function Developer() {
   interface Request {
     id: number;
@@ -32,12 +30,11 @@ export default function Developer() {
   const handleClickOpen = () => {
     setOpen(true);
   };
-  const handleClose =  async (
+  const handleClose = async (
     total_cost: number,
     revenue_per_month: number,
     construction_time: number
   ) => {
-    
     setOpen(false);
     set_total_cost(total_cost);
     set_construction_time(construction_time);
@@ -91,7 +88,6 @@ export default function Developer() {
   const handleApprove = async (project_id: number) => {
     set_current_project_id(project_id);
     handleClickOpen();
-    
   };
   const handleCancel = async (request_id: number) => {
     const requestOptions = {
@@ -118,70 +114,75 @@ export default function Developer() {
   };
 
   return (
-    <div>
-      <h1>All open requests:</h1>
+    <Grid container sx={{ paddingTop: 2 }}>
+      <Grid item xs={12}>
+        <Typography variant="h4" gutterBottom component="div">
+          All open requests:
+        </Typography>
+      </Grid>
 
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell align="right">zip code</TableCell>
-            <TableCell align="right">project type</TableCell>
-            <TableCell align="right">status</TableCell>
-            <TableCell align="right">approve</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {requests
-            .filter(
-              (request: Request) => request.status === "WaitingForApproval"
-            )
-            .map((request: Request) => (
-              <TableRow
-                key={request.id}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                <TableCell align="right">{request.zip_code}</TableCell>
-                <TableCell align="right"> {request.project_type}</TableCell>
-                <TableCell align="right">{request.status}</TableCell>
-                <TableCell align="right">
-                  <Button
-                    color="success"
-                    variant="contained"
-                    onClick={() => handleApprove(request.id)}
-                  >
-                    Yes
-                  </Button>
-
-                  <Button
-                    color="error"
-                    variant="contained"
-                    onClick={() => handleCancel(request.id)}
-                  >
-                    No
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-        </TableBody>
-      </Table>
-
-      <CollapsableAlert
-        error={{
-          open: !success,
-          severity: "error",
-          message: "Something went wrong. Please try again later.",
-        }}
-        onClose={() => setSuccess(!success)}
-      />
-      <div>
-        <OwnDialog
-          total_cost={total_cost}
-          construction_time={construction_time}
-          revenue_per_month={revenue_per_month}
-          open={open}
-          onClose={handleClose}
+      <Grid item xs={12}>
+        <CollapsableAlert
+          error={{
+            open: !success,
+            severity: "error",
+            message: "Something went wrong. Please try again later.",
+          }}
+          onClose={() => setSuccess(!success)}
         />
-      </div>
-    </div>
+      </Grid>
+
+      <Grid item xs={12}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell align="right">zip code</TableCell>
+              <TableCell align="right">project type</TableCell>
+              <TableCell align="right">status</TableCell>
+              <TableCell align="right">approve</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {requests
+              .filter(
+                (request: Request) => request.status === "WaitingForApproval"
+              )
+              .map((request: Request) => (
+                <TableRow
+                  key={request.id}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  <TableCell align="right">{request.zip_code}</TableCell>
+                  <TableCell align="right"> {request.project_type}</TableCell>
+                  <TableCell align="right">{request.status}</TableCell>
+                  <TableCell align="right">
+                    <IconButton
+                      color="success"
+                      onClick={() => handleApprove(request.id)}
+                    >
+                      <Done />
+                    </IconButton>
+
+                    <IconButton
+                      color="error"
+                      onClick={() => handleCancel(request.id)}
+                    >
+                      <Clear />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))}
+          </TableBody>
+        </Table>
+      </Grid>
+
+      <OwnDialog
+        total_cost={total_cost}
+        construction_time={construction_time}
+        revenue_per_month={revenue_per_month}
+        open={open}
+        onClose={handleClose}
+      />
+    </Grid>
   );
 }
