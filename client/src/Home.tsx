@@ -1,43 +1,44 @@
-import { useState } from "react";
 import "./Home.css";
 import { useNavigate } from "react-router-dom";
-import background from "../images/background.jpg";
-import { Chart } from "./Chart";
 import { Button, Grid, TextField } from "@mui/material";
 function App() {
   const navigate = useNavigate();
 
   const handleStart = () => {
-    navigate("/projects");
+    navigate("/organize");
   };
 
   return (
     <div className="App">
       <div className="login-container">
-        <h1>
-          2gether.<span style={{ color: "lightgreen" }}>green</span>
-        </h1>
-        <Grid container spacing={3} alignItems="flex-end">
-          <Grid item>
+        <Grid container alignItems="flex-end" sx={{ width: "100%" }}>
+          <Grid item xs={12} sx={{ paddingBottom: 2 }}>
+            <h1>
+              2gether.<span style={{ color: "lightgreen" }}>green</span>
+            </h1>
+          </Grid>
+          <Grid item xs={12} sx={{ paddingBottom: 2 }}>
             <TextField
               className="login-field"
               label="Username"
               variant="outlined"
+              fullWidth
             />
           </Grid>
-          <Grid item>
-
+          <Grid item xs={12} sx={{ paddingBottom: 2 }}>
             <TextField
               className="login-field"
               label="Password"
               variant="outlined"
+              fullWidth
             />
           </Grid>
-          <Grid item>
+          <Grid item xs={12} sx={{ paddingBottom: 2 }}>
             <Button
               className="login-button"
               variant="contained"
               onClick={handleStart}
+              fullWidth
             >
               Start
             </Button>

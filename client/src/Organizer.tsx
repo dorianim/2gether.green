@@ -9,7 +9,10 @@ import {
   Autocomplete,
   AutocompleteRenderInputParams,
   Button,
+  FormControl,
+  Grid,
   IconButton,
+  InputLabel,
   MenuItem,
   Select,
   TextField,
@@ -52,44 +55,69 @@ export default function Organzier() {
       setSuccess(false);
     }
     if (successful) {
-      navigate("/project/"+ respBody.id);
+      navigate("/project/" + respBody.id);
     }
   };
 
   return (
-    <div>
-      <h1>Welcome!</h1>
-      <h2>Please enter some details:</h2>
-      <TextField
-        label="Zip code"
-        placeholder="00000"
-        type="number"
-        onChange={(e) => setZipCode(parseInt(e.target.value))}
-        fullWidth
-        required
-      />
-      <div className="select">
-        Category:
-        <Select onChange={(e) => setCategory(e.target.value as string)}>
-          <MenuItem value="Windmill">Windmill</MenuItem>
-          <MenuItem value="Solar">Solar panel</MenuItem>
-        </Select>
-      </div>
+    <Grid container sx={{ paddingTop: 2 }}>
+      <Grid item xs={12} sx={{ paddingBottom: 2 }}>
+        <Typography variant="h4">Organize a project</Typography>
+      </Grid>
 
-      <div className="submitButton">
+      <Grid item xs={12} sx={{ paddingBottom: 2 }}>
+        <Typography variant="body1">
+          To get started with your sustainble energy project, please enter your
+          Zip code and the type of projoct you wish to establish, below. One of
+          our experts will take a look at your location and assess wether it is
+          feasible. They will then get back to you with more details about the
+          project.
+        </Typography>
+      </Grid>
+
+      <Grid item xs={12} sx={{ paddingBottom: 2 }}>
+        <CollapsableAlert
+          error={{
+            open: !success,
+            severity: "error",
+            message: "Something went wrong. Please try again later.",
+          }}
+          onClose={() => setSuccess(true)}
+        />
+      </Grid>
+
+      <Grid item xs={6} sx={{ paddingBottom: 2, paddingRight: 2 }}>
+        <TextField
+          label="Zip code"
+          placeholder="00000"
+          type="number"
+          onChange={(e) => setZipCode(parseInt(e.target.value))}
+          fullWidth
+          required
+        />
+      </Grid>
+
+      <Grid item xs={6} sx={{ paddingBottom: 2 }}>
+        <FormControl fullWidth>
+          <InputLabel id="category-select-label">Category</InputLabel>
+
+          <Select
+            labelId="category-select-label"
+            onChange={(e) => setCategory(e.target.value as string)}
+            label="Category"
+            fullWidth
+          >
+            <MenuItem value="Windmill">Windmill</MenuItem>
+            <MenuItem value="Solar">Solar panel</MenuItem>
+          </Select>
+        </FormControl>
+      </Grid>
+
+      <Grid item xs={12} sx={{ paddingBottom: 2 }}>
         <Button variant="contained" onClick={handleSubmit}>
           Request offer
         </Button>
-      </div>
-
-      <CollapsableAlert
-        error={{
-          open: !success,
-          severity: "error",
-          message: "Something went wrong. Please try again later.",
-        }}
-        onClose={() => setSuccess(true)}
-      />
-    </div>
+      </Grid>
+    </Grid>
   );
 }
