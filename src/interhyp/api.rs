@@ -58,7 +58,7 @@ struct Loan {
 //
 
 #[allow(non_snake_case)]
-#[derive(Deserialize)]
+#[derive(Deserialize, Clone)]
 pub struct MorgageOffer {
     //nominalInterest: 4.34,
     //effectiveInterest: 4.47,
@@ -79,7 +79,7 @@ pub struct MorgageOffer {
 }
 
 #[allow(non_snake_case)]
-#[derive(Deserialize)]
+#[derive(Deserialize, Clone)]
 pub struct BankDetails {
     pub bankName: String,
 }

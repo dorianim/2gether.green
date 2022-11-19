@@ -1,3 +1,4 @@
+use crate::interhyp;
 use crate::model::{self};
 use ::serde::{Deserialize, Serialize};
 use rocket::http::Status;
@@ -45,10 +46,16 @@ struct ProjectReviewApproved {
 }
 
 #[derive(Deserialize)]
+struct ProjectFundingStarted {
+    amortisation: u8,
+}
+
+#[derive(Deserialize)]
 #[serde(tag = "status")]
 enum ProjectStatusUpdateRequest {
     Approved(ProjectReviewApproved),
     Rejected,
+    Funding(ProjectFundingStarted),
 }
 
 #[get("/")]
@@ -127,6 +134,17 @@ async fn update_project_status(
             status: Set(ProjectStatus::Rejected.to_string()),
             ..Default::default()
         },
+        ProjectStatusUpdateRequest::Funding(data) => {
+            let morgage_rate =
+                get_morgage_offer(project_id.to_owned(), data.amortisation, db).await?;
+            model::project::ActiveModel {
+                id: Set(project_id),
+                status: Set(ProjectStatus::Funding.to_string()),
+                cost_per_month: Set(Some(morgage_rate.monthlyPayment as i32)),
+                payoff_time: Set(Some(morgage_rate.totalLoanDurationMonths as i32)),
+                ..Default::default()
+            }
+        }
     };
     let db = db as &DatabaseConnection;
     model::project::Entity::update(updated_model)
@@ -143,6 +161,19 @@ async fn get_morgage_rate(
     amortisation: u8,
     db: &State<DatabaseConnection>,
 ) -> Result<Json<MorgageRateResponse>, Status> {
+    let morgage_rate = get_morgage_offer(project_id, amortisation, db).await?;
+    Ok(Json(MorgageRateResponse {
+        cost_per_month: morgage_rate.monthlyPayment,
+        payoff_time: morgage_rate.totalLoanDurationMonths,
+        bank_name: morgage_rate.bankDetails.bankName.to_owned(),
+    }))
+}
+
+async fn get_morgage_offer(
+    project_id: String,
+    amortisation: u8,
+    db: &State<DatabaseConnection>,
+) -> Result<interhyp::MorgageOffer, Status> {
     let db = db as &DatabaseConnection;
     let project = model::project::Entity::find_by_id(project_id.to_owned())
         .one(db)
@@ -163,13 +194,7 @@ async fn get_morgage_rate(
     .await
     .unwrap();
 
-    let morgage_rate = morgage_rate.first().unwrap();
-
-    Ok(Json(MorgageRateResponse {
-        cost_per_month: morgage_rate.monthlyPayment,
-        payoff_time: morgage_rate.totalLoanDurationMonths,
-        bank_name: morgage_rate.bankDetails.bankName.to_owned(),
-    }))
+    Ok(morgage_rate[0].clone())
 }
 
 pub fn routes() -> Vec<rocket::Route> {
