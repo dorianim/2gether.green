@@ -48,8 +48,8 @@ export const Chart = () => {
                         data: [
                             {x: 0, y: 0},
                             {x: 0, y: calculateAfterFinishBuilding(0)},
-                            {x: sample_data.payoffMonth, y: calculatePayoffPoint(sample_data.payoffMonth)},
                             {x: sample_data.finishBuilding, y: calculatePayoffPoint(sample_data.finishBuilding)},
+                            {x: sample_data.payoffMonth, y: calculatePayoffPoint(sample_data.payoffMonth)},
                         ],
                         showLine: true,
                         hidden: true
@@ -57,7 +57,7 @@ export const Chart = () => {
                     {
                         label: "Balance Function",
                         data: [
-                            {x: 0, y: calculateAfterFinishBuilding(0)},
+                            {x: 0, y: 0},
                             {x: sample_data.finishBuilding, y: calculatePayoffPoint(sample_data.finishBuilding)},
                             {x: sample_data.payoffMonth, y: calculateAfterFinishBuilding(sample_data.payoffMonth)},
                             {x: sample_data.payoffMonth + Math.abs(calculateAfterFinishBuilding(sample_data.payoffMonth)/profit_per_month), y: 0},
