@@ -1,31 +1,28 @@
 import { Card, CardContent, Typography } from "@mui/material";
-import { ProjectDetails, projectDetailsMaps } from "./WaitForResponse";
+import Project from "./Project";
+import { ProjectDetails } from "./WaitForResponse";
 
 
 interface FundingProps {
     projectDetails: ProjectDetails;
+    projectDetailsMaps: any;
 }
 
 export default function Funding(props: FundingProps) {
 
+    const list =  Object.keys(props.projectDetailsMaps).map((key) => {
+        return (<li>{props.projectDetailsMaps[key]}: {props.projectDetails[key as keyof ProjectDetails]}</li>);
+    });
+
+    console.log(list);
 
     return (
         <div>
-            {Object.keys(props.projectDetails).map((key) => {
-                return (
-                    <Card variant="outlined">
-                        <CardContent>
-                            <Typography variant="h5" component="div">
-                                {projectDetailsMaps.get(key)}
-                            </Typography>
-                            <Typography sx={{ mb: 1.5 }}>
-                                {props.projectDetails[key as keyof ProjectDetails]}
-                            </Typography>
-                        </CardContent>
-                        <div>{key}: {props.projectDetails[key as keyof ProjectDetails]}</div>
-                    </Card>
-                );
-            })}
+            <h1>Funding</h1>
+            <ul>
+                {list}
+            </ul>
+            <Project project={{name: "Hallo", progress: 3, participants: 65}} />
         </div>
     )
 
