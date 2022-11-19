@@ -16,14 +16,6 @@ interface Project {
 
 const marks = [
     {
-      value: 10,
-      label: "10€",
-    },
-    {
-      value: 50,
-      label: "50€",
-    },
-    {
       value: 100,
       label: "100€",
     },
@@ -74,6 +66,8 @@ export default function Project(props: ProjectProps) {
           step={10}
           valueLabelDisplay="auto"
           marks={marks}
+          min={100}
+          max={2000}
         />
       </Box>
       <div className="submitButton">
