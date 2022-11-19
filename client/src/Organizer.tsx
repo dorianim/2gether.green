@@ -25,6 +25,7 @@ export default function Organzier() {
   const navigate = useNavigate();
   const handleSubmit = async () => {
     let successful: boolean = true;
+    let respBody;
     const requestOptions = {
       method: "POST",
       body: JSON.stringify({
@@ -40,6 +41,7 @@ export default function Organzier() {
       if (!response.ok) {
         successful = false;
       }
+      respBody = await response.json();
     } catch (e) {
       console.log(e);
       successful = false;
@@ -50,7 +52,7 @@ export default function Organzier() {
       setSuccess(false);
     }
     if (successful) {
-      navigate("/submitted/waiting");
+      navigate("/project/"+ respBody.id);
     }
   };
 
