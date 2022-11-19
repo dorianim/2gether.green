@@ -51,7 +51,7 @@ export default function Project(props: ProjectProps) {
       <div className="projectName">
         <strong>{project.name}</strong>
       </div>
-      <LinearProgress value={progress}></LinearProgress>
+      <LinearProgress variant="determinate" value={progress}></LinearProgress>
       Progress: {project.progress}%<br />
       Participants: {project.participants}
       <br />
