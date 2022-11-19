@@ -3,7 +3,7 @@ import "./Home.css";
 import { useNavigate } from "react-router-dom";
 import background from "../images/background.jpg";
 import { Chart } from "./Chart";
-import { Button, TextField } from "@mui/material";
+import { Button, Grid, TextField } from "@mui/material";
 function App() {
   const navigate = useNavigate();
 
@@ -17,23 +17,32 @@ function App() {
         <h1>
           2gether.<span style={{ color: "lightgreen" }}>green</span>
         </h1>
-        <TextField
-          className="login-field"
-          label="Username"
-          variant="outlined"
-        />
-        <TextField
-          className="login-field"
-          label="Password"
-          variant="outlined"
-        />
-        <Button
-          className="login-button"
-          variant="contained"
-          onClick={handleStart}
-        >
-          Start
-        </Button>
+        <Grid container spacing={3} alignItems="flex-end">
+          <Grid item>
+            <TextField
+              className="login-field"
+              label="Username"
+              variant="outlined"
+            />
+          </Grid>
+          <Grid item>
+
+            <TextField
+              className="login-field"
+              label="Password"
+              variant="outlined"
+            />
+          </Grid>
+          <Grid item>
+            <Button
+              className="login-button"
+              variant="contained"
+              onClick={handleStart}
+            >
+              Start
+            </Button>
+          </Grid>
+        </Grid>
       </div>
     </div>
   );

@@ -10,11 +10,15 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Developer from "./Developer";
 import PageContainer from "./PageContainer";
 import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
+import { lightGreen } from "@mui/material/colors";
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 
 export const darkTheme = createTheme({
   palette: {
     mode: "light",
+    primary: {
+      main: '#90EE90',
+    }
   },
 });
 
