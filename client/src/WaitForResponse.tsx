@@ -74,7 +74,7 @@ export default function WaitForResponse() {
           Refresh
         </Button>
       </div>
-    </div>) : (
+    </div>) : projectDetails?.status === "Approved" ? (
       <div>
         <h2>Your project has been approved!</h2>
         <p>Here is some data about your Project: </p>
@@ -95,6 +95,10 @@ export default function WaitForResponse() {
             />
           <Button variant="contained" onClick={handleCalculate}>Calculate</Button>
           <Button variant="contained" onClick={handleBeginFunding}>Begin funding</Button>
+      </div>
+    ) : (
+      <div>
+        <h2>Sorry, your project has been rejected.</h2>
       </div>
     )
   );
