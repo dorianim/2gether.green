@@ -10,6 +10,8 @@ import {
   AutocompleteRenderInputParams,
   Button,
   IconButton,
+  MenuItem,
+  Select,
   TextField,
   Typography,
 } from "@mui/material";
@@ -66,15 +68,10 @@ export default function Organzier() {
       />
       <div className="select">
         Category:
-        <Autocomplete
-          options={["Windmill", "Solar power plant"]}
-          onChange={(e, value) => setCategory(value ?? "")}
-          renderInput={function (
-            params: AutocompleteRenderInputParams
-          ): React.ReactNode {
-            throw new Error("Function not implemented.");
-          }}
-        />
+        <Select onChange={(e) => setCategory(e.target.value as string)}>
+          <MenuItem value="Windmill">Windmill</MenuItem>
+          <MenuItem value="Solar">Solar panel</MenuItem>
+        </Select>
       </div>
 
       <div className="submitButton">
@@ -85,7 +82,7 @@ export default function Organzier() {
 
       <CollapsableAlert
         error={{
-          open: success,
+          open: !success,
           severity: "error",
           message: "Something went wrong. Please try again later.",
         }}
