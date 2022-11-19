@@ -115,9 +115,9 @@ export default function Developer() {
 
   return (
     <Grid container sx={{ paddingTop: 2 }}>
-      <Grid item xs={12}>
-        <Typography variant="h4" gutterBottom component="div">
-          All open requests:
+      <Grid item xs={12} sx={{ textAlign: "center" }}>
+        <Typography variant="h5" gutterBottom component="div">
+          Projects pending approval
         </Typography>
       </Grid>
 
@@ -183,6 +183,8 @@ export default function Developer() {
         open={open}
         onClose={handleClose}
       />
+
+      <div></div>
     </Grid>
   );
 }
