@@ -19,7 +19,7 @@ root.render(
             <Route path="/projects" element={<Projects />} />
             <Route path="/organize" element={<Organzier />} />
             <Route path="/developer" element={<Developer />} />
-            <Route path="/submitted/waiting" element={<WaitForResponse />} />
+            <Route path="/project/:projectId" element={<WaitForResponse />} />
             <Route path="/" element={<Home />} />
           </Routes>
         </Router>

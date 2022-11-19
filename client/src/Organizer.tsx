@@ -4,21 +4,19 @@ import { TextField, Button } from "@mui/joy/";
 import Autocomplete from "@mui/joy/Autocomplete";
 import { useNavigate } from "react-router-dom";
 import Alert from "@mui/joy/Alert";
-import IconButton from '@mui/joy/IconButton';
-import ReportIcon from '@mui/icons-material/Report';
-import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
-import Typography from '@mui/joy/Typography';
+import IconButton from "@mui/joy/IconButton";
+import ReportIcon from "@mui/icons-material/Report";
+import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
+import Typography from "@mui/joy/Typography";
 import "./Organizer.css";
-//postleitzahl
-//typ
 
 export default function Organzier() {
   const [zipCode, setZipCode] = useState(0);
   const [category, setCategory] = useState("");
- const [success, setSuccess] = useState(true);
+  const [success, setSuccess] = useState(true);
   const navigate = useNavigate();
   const handleSubmit = async () => {
-    let successful : boolean = true;
+    let successful: boolean = true;
     const requestOptions = {
       method: "POST",
       body: JSON.stringify({
@@ -27,21 +25,20 @@ export default function Organzier() {
       }),
     };
     try {
-const response = await fetch(
-      "http://localhost:8000/api/v1/project/",
-      requestOptions
-    )
-    if (!response.ok){
-     successful = false;
-    }
+      const response = await fetch(
+        "http://localhost:8000/api/v1/project/",
+        requestOptions
+      );
+      if (!response.ok) {
+        successful = false;
+      }
     } catch (e) {
       console.log(e);
       successful = false;
     }
-    console.log()
-    
-    
-    if (!successful){
+    console.log();
+
+    if (!successful) {
       setSuccess(false);
     }
     if (successful) {
@@ -74,17 +71,25 @@ const response = await fetch(
           Request offer
         </Button>
       </div>
-      {success === false && <Alert
+      {success === false && (
+        <Alert
           key={"Error"}
-          sx={{ alignItems: 'flex-start' }}
+          sx={{ alignItems: "flex-start" }}
           startDecorator={React.cloneElement(<ReportIcon />, {
-            sx: { mt: '2px', mx: '4px' },
-            fontSize: 'xl2',
+            sx: { mt: "2px", mx: "4px" },
+            fontSize: "xl2",
           })}
           variant="soft"
-          color={'danger'}
+          color={"danger"}
           endDecorator={
-            <IconButton variant="soft" size="sm" color={'danger'} onClick={() => {setSuccess(true);}}>
+            <IconButton
+              variant="soft"
+              size="sm"
+              color={"danger"}
+              onClick={() => {
+                setSuccess(true);
+              }}
+            >
               <CloseRoundedIcon />
             </IconButton>
           }
@@ -97,7 +102,8 @@ const response = await fetch(
               An Error occured :/
             </Typography>
           </div>
-        </Alert>}
+        </Alert>
+      )}
     </div>
   );
 }
