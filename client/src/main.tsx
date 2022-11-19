@@ -1,7 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import Home from './Home'
-import './index.css'
+import '@fontsource/public-sans';
+import './main.css'
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 root.render(
