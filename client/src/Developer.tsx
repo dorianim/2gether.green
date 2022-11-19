@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Grid, Typography } from "@mui/material";
+import { Grid, IconButton, Typography } from "@mui/material";
 import CollapsableAlert from "./CollapsableAlert";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Button from "@mui/material/Button";
 import OwnDialog from "./OwnDialog";
+import { Clear, Done } from "@mui/icons-material";
 
 export default function Developer() {
   interface Request {
@@ -156,21 +156,19 @@ export default function Developer() {
                   <TableCell align="right"> {request.project_type}</TableCell>
                   <TableCell align="right">{request.status}</TableCell>
                   <TableCell align="right">
-                    <Button
+                    <IconButton
                       color="success"
-                      variant="contained"
                       onClick={() => handleApprove(request.id)}
                     >
-                      Yes
-                    </Button>
+                      <Done />
+                    </IconButton>
 
-                    <Button
+                    <IconButton
                       color="error"
-                      variant="contained"
                       onClick={() => handleCancel(request.id)}
                     >
-                      No
-                    </Button>
+                      <Clear />
+                    </IconButton>
                   </TableCell>
                 </TableRow>
               ))}
