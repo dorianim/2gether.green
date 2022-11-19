@@ -14,7 +14,7 @@ export interface ProjectDetails {
   total_cost?: number;
 }
 
-export const projectDetailsMaps = new Map<string, string>([["construction_time", "Construction time"], ["cost_per_month", "Cost per month"], ["payoff_time", "Payoff time"], ["revenue_per_month", "Revenue per month"], ["total_cost", "Total cost"]]);
+const projectDetailsMaps = {"construction_time": "Construction time", "cost_per_month": "Cost per month", "payoff_time": "Payoff time", "revenue_per_month": "Revenue per month", "total_cost": "Total cost" };
 
 
 export default function WaitForResponse() {
@@ -22,6 +22,8 @@ export default function WaitForResponse() {
   const [projectDetails, setProjectDetails] = React.useState<ProjectDetails>();
   const amortisation = React.useRef(0);
   const [success, setSuccess] = React.useState(true);
+
+  console.log(projectDetailsMaps);
 
   React.useEffect(() => {
     handleRefresh();
@@ -31,6 +33,7 @@ export default function WaitForResponse() {
     fetch("http://localhost:8000/api/v1/project/" + projectId).then(async (response) => {
       if (response.ok) {
         let data = await response.json();
+        console.log(data);
         setProjectDetails(data);
         setSuccess(true);
       } else {
@@ -59,16 +62,17 @@ export default function WaitForResponse() {
     fetch("http://localhost:8000/api/v1/project/" + projectId, {
       method: 'PATCH',
       body: JSON.stringify({
-        status: 'funding',
-        amortisation: amortisation
+        status: 'Funding',
+        amortisation: amortisation.current
       }),
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
       },
     }).then(async (response) => {
+      console.log(response);
       if (response.ok) {
-        let data = await response.json();
-        setProjectDetails(data);
+        // let data = await response.json();
+        setProjectDetails({ ...projectDetails, status: "Funding" });  
         setSuccess(true);
       } else {
         setSuccess(false);
@@ -122,7 +126,7 @@ export default function WaitForResponse() {
         <Button variant="contained" onClick={handleBeginFunding}>Begin funding</Button>
       </div>
       ) : projectDetails?.status === "Funding" ? (
-      <Funding projectDetails={projectDetails}></Funding>
+        <Funding projectDetails={projectDetails} projectDetailsMaps={projectDetailsMaps}></Funding>
       ) : (
       <div>
         <h2>Sorry, your project has been rejected.</h2>
