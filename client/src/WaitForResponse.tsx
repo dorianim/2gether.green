@@ -1,8 +1,10 @@
-import { Button, TextField } from "@mui/material";
+import { Button, Container, Grid, TextField, Typography } from "@mui/material";
 import React from "react";
 import { useParams } from "react-router-dom";
 import Funding from "./Funding";
 import CollapseAlert from "./CollapsableAlert";
+import InReview from "./InReview";
+import FundingConfiguration from "./FundingConfigutation";
 
 export interface ProjectDetails {
   id?: string;
@@ -14,8 +16,13 @@ export interface ProjectDetails {
   total_cost?: number;
 }
 
-const projectDetailsMaps = {"construction_time": "Construction time", "cost_per_month": "Cost per month", "payoff_time": "Payoff time", "revenue_per_month": "Revenue per month", "total_cost": "Total cost" };
-
+const projectDetailsMaps = {
+  construction_time: "Construction time",
+  cost_per_month: "Cost per month",
+  payoff_time: "Payoff time",
+  revenue_per_month: "Revenue per month",
+  total_cost: "Total cost",
+};
 
 export default function WaitForResponse() {
   const { projectId } = useParams();
@@ -30,108 +37,110 @@ export default function WaitForResponse() {
   }, []);
 
   const handleRefresh = async () => {
-    fetch("http://localhost:8000/api/v1/project/" + projectId).then(async (response) => {
-      if (response.ok) {
-        let data = await response.json();
-        console.log(data);
-        setProjectDetails(data);
-        setSuccess(true);
-      } else {
+    fetch("http://localhost:8000/api/v1/project/" + projectId)
+      .then(async (response) => {
+        if (response.ok) {
+          let data = await response.json();
+          console.log(data);
+          setProjectDetails(data);
+          setSuccess(true);
+        } else {
+          setSuccess(false);
+        }
+      })
+      .catch((error) => {
         setSuccess(false);
-      }
-    }).catch((error) => {
-      setSuccess(false);
-    });
+      });
   };
 
   const handleCalculate = async () => {
-    fetch("http://localhost:8000/api/v1/project/" + projectId + "/morgage_rate?amortisation=" + amortisation.current).then(async (response) => {
-      if (response.ok) {
-        let data = await response.json();
-        setProjectDetails({ ...projectDetails, cost_per_month: data.cost_per_month, payoff_time: data.payoff_time });
-        setSuccess(true);
-      } else {
+    fetch(
+      "http://localhost:8000/api/v1/project/" +
+        projectId +
+        "/morgage_rate?amortisation=" +
+        amortisation.current
+    )
+      .then(async (response) => {
+        if (response.ok) {
+          let data = await response.json();
+          setProjectDetails({
+            ...projectDetails,
+            cost_per_month: data.cost_per_month,
+            payoff_time: data.payoff_time,
+          });
+          setSuccess(true);
+        } else {
+          setSuccess(false);
+        }
+      })
+      .catch((error) => {
         setSuccess(false);
-      }
-    }).catch((error) => {
-      setSuccess(false);
-    });
-  }
+      });
+  };
 
   const handleBeginFunding = async () => {
     fetch("http://localhost:8000/api/v1/project/" + projectId, {
-      method: 'PATCH',
+      method: "PATCH",
       body: JSON.stringify({
-        status: 'Funding',
-        amortisation: amortisation.current
+        status: "Funding",
+        amortisation: amortisation.current,
       }),
       headers: {
-        'Content-type': 'application/json; charset=UTF-8',
+        "Content-type": "application/json; charset=UTF-8",
       },
-    }).then(async (response) => {
-      console.log(response);
-      if (response.ok) {
-        // let data = await response.json();
-        setProjectDetails({ ...projectDetails, status: "Funding" });  
-        setSuccess(true);
-      } else {
+    })
+      .then(async (response) => {
+        console.log(response);
+        if (response.ok) {
+          // let data = await response.json();
+          setProjectDetails({ ...projectDetails, status: "Funding" });
+          setSuccess(true);
+        } else {
+          setSuccess(false);
+        }
+      })
+      .catch((error) => {
         setSuccess(false);
-      }
-    }).catch((error) => {
-      setSuccess(false);
-    });
-  }
+      });
+  };
 
   return (
     <>
-      <CollapseAlert
-        error={{
-          open: !success,
-          severity: "error",
-          message: "Something went wrong. Please try again later.",
-        }}
-        onClose={() => setSuccess(!success)}
-      />
-      { projectDetails?.status === "WaitingForApproval" ?
-      ( <div>
-        <h2>Success! We will check your request. </h2>
-        <h3>
-          This will may take a while. Please return to this page in a few days.
-        </h3>
-        <div className="submitButton">
-          <Button variant="contained" onClick={handleRefresh}>
-            Refresh
-          </Button>
-        </div>
-      </div>) : projectDetails?.status === "Approved" ? (
-      <div>
-        <h2>Your project has been approved!</h2>
-        <p>Here is some data about your Project: </p>
-        <ul>
-          <li>Construction time: {projectDetails?.construction_time}</li>
-          <li>Cost per month: {projectDetails?.cost_per_month ?? "Please press calculate"}</li>
-          <li>Payoff time: {projectDetails?.payoff_time ?? "Please press calculate"}</li>
-          <li>Revenue per month: {projectDetails?.revenue_per_month}</li>
-          <li>Total cost: {projectDetails?.total_cost}</li>
-        </ul>
-        <p> Please specify an amortisation rate:</p>
-        <TextField
-          className="login-field"
-          label="Amortisation Rate"
-          variant="outlined"
-          onChange={(e) => amortisation.current = parseInt(e.target.value)}
-          fullWidth
-        />
-        <Button variant="contained" onClick={handleCalculate}>Calculate</Button>
-        <Button variant="contained" onClick={handleBeginFunding}>Begin funding</Button>
+      <Grid container>
+        <Grid item xs={12}>
+          {projectDetails?.status === "WaitingForApproval" ? (
+            <InReview handleRefresh={handleRefresh} />
+          ) : projectDetails?.status === "Approved" ? (
+            <FundingConfiguration
+              projectDetails={projectDetails}
+              onAmortizationChange={(e) => (amortisation.current = e)}
+              handleCalculate={handleCalculate}
+              handleBeginFunding={handleBeginFunding}
+            />
+          ) : projectDetails?.status === "Funding" ? (
+            <Funding
+              projectDetails={projectDetails}
+              projectDetailsMaps={projectDetailsMaps}
+            ></Funding>
+          ) : (
+            <Typography variant="h4">
+              Sorry, your project has been rejected.
+            </Typography>
+          )}
+        </Grid>
+      </Grid>
+      <div style={{ position: "absolute", top: 100, left: 0, right: 0 }}>
+        <Container maxWidth="lg">
+          <CollapseAlert
+            error={{
+              open: !success,
+              severity: "error",
+              message: "Something went wrong. Please try again later.",
+            }}
+            onClose={() => setSuccess(!success)}
+          />
+        </Container>
       </div>
-      ) : projectDetails?.status === "Funding" ? (
-        <Funding projectDetails={projectDetails} projectDetailsMaps={projectDetailsMaps}></Funding>
-      ) : (
-      <div>
-        <h2>Sorry, your project has been rejected.</h2>
-      </div>
-      )}
     </>
   );
 }

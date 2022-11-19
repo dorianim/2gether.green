@@ -69,7 +69,15 @@ export default function Organzier() {
         alignSelf: "center",
         margin: "auto",
       }}
+      spacing={2}
     >
+      <Grid item xs={12} sx={{ alignItems: "center", marginTop: "-12rem" }}>
+        <img
+          src="/images/photo4.jpg"
+          style={{ width: "100%", borderRadius: "4rem" }}
+        />
+      </Grid>
+
       <Grid item xs={12} sx={{ paddingBottom: 2, textAlign: "center" }}>
         <Typography variant="h4">Organize a project</Typography>
       </Grid>
