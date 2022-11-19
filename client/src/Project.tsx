@@ -1,14 +1,16 @@
 import "./Projects.css";
 import * as React from "react";
 import { Box, Button, LinearProgress, Slider } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 interface ProjectProps {
   project: Project;
 }
 interface Project {
-  name: string;
+  project_type?: string;
   progress: number;
   participants: number;
+  total_cost: number;
 }
 
 const marks = [
@@ -38,21 +40,28 @@ function valueText(value: number) {
   return `${value}€`;
 }
 
-function handleSubmit() {
-  //TODO
-}
 
 export default function Project(props: ProjectProps) {
   const project: Project = props.project;
-  const [progress, setProgress] = React.useState(25);
+  const [progress, setProgress] = React.useState(props.project.progress);
+  const investment = React.useRef(100);
+  const navigate = useNavigate();
+  
+  function handleSubmit() {
+    let newProgress = investment.current / project.total_cost * 100;
+    setProgress(progress + newProgress);
+    localStorage.setItem("progress", progress + newProgress + "");
+    navigate("/thanks");
+  }
+
   return (
     <div>
       {" "}
       <div className="projectName">
-        <strong>{project.name}</strong>
+        <strong>{project.project_type}</strong>
       </div>
       <LinearProgress variant="determinate" value={progress}></LinearProgress>
-      Progress: {project.progress}%<br />
+      Progress: {progress.toFixed(2)}%<br />
       Participants: {project.participants}
       <br />
       How much do you want to invest? (monthly)
@@ -64,6 +73,7 @@ export default function Project(props: ProjectProps) {
           step={10}
           valueLabelDisplay="auto"
           marks={marks}
+          onChange={(event, value) => investment.current = value as number}
           min={100}
           max={2000}
         />

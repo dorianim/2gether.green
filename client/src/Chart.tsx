@@ -3,44 +3,50 @@ import { Chart as ChartReg, registerables, TooltipItem } from 'chart.js';
 ChartReg.register(...registerables);
 
 
-const sample_data =  {
-    payoffMonth: 100,
-    finishBuilding: 15,
-    endOfChart: 300
+// const sample_data =  {
+//     payoffMonth: 100,
+//     finishBuilding: 15,
+// }
+
+interface ChartProps {
+    payOffMonth: number;
+    cost_per_month: number;
+    profit_per_month: number;
+    construction_time: number;
 }
 
-export const Chart = () => {
-    const fee_per_month = 200;
-    const profit_per_month = 100;
 
+
+export const CostChart = (props: ChartProps) => {
+    const endOfChart = props.payOffMonth + 100;
     function calculatePayoffPoint(month: number) {
-        return (((-1)*fee_per_month)* month);
+        return (((-1)*props.cost_per_month)* month);
     }
 
     function calculateAfterFinishBuilding(month: number) {
-        let ypoint = calculatePayoffPoint(sample_data.finishBuilding);
-        let k = (-1)*(fee_per_month - profit_per_month);
-        let d = ypoint / (k * sample_data.finishBuilding);
+        let ypoint = calculatePayoffPoint(props.construction_time);
+        let k = (-1)*(props.cost_per_month - props.profit_per_month);
+        let d = ypoint / (k * props.profit_per_month);
         return (k * month) + d;
     }
 
     function calculatePureProfit(month: number) {
-        let k = profit_per_month;
-        let d = 0 - (k * sample_data.finishBuilding);
+        let k = props.profit_per_month;
+        let d = 0 - (k * props.construction_time);
         return (k * month) + d;
     }
 
     function calculateRealProfit(month: number) {
-        let k = profit_per_month;
-        let d = calculateAfterFinishBuilding(sample_data.payoffMonth) - (k * sample_data.payoffMonth);
+        let k = props.profit_per_month;
+        let d = calculateAfterFinishBuilding(props.payOffMonth) - (k * props.payOffMonth);
         return (k * month) + d;
     }
 
 
     return (
         <Scatter
-            width={500}
-            height={300}
+            width={1000}
+            height={600}
             data={{
                 datasets: [
                     {
@@ -48,8 +54,8 @@ export const Chart = () => {
                         data: [
                             {x: 0, y: 0},
                             {x: 0, y: calculateAfterFinishBuilding(0)},
-                            {x: sample_data.finishBuilding, y: calculatePayoffPoint(sample_data.finishBuilding)},
-                            {x: sample_data.payoffMonth, y: calculatePayoffPoint(sample_data.payoffMonth)},
+                            {x: props.construction_time, y: calculatePayoffPoint(props.construction_time)},
+                            {x: props.payOffMonth, y: calculatePayoffPoint(props.payOffMonth)},
                         ],
                         showLine: true,
                         hidden: true
@@ -58,10 +64,10 @@ export const Chart = () => {
                         label: "Balance Function",
                         data: [
                             {x: 0, y: 0},
-                            {x: sample_data.finishBuilding, y: calculatePayoffPoint(sample_data.finishBuilding)},
-                            {x: sample_data.payoffMonth, y: calculateAfterFinishBuilding(sample_data.payoffMonth)},
-                            {x: sample_data.payoffMonth + Math.abs(calculateAfterFinishBuilding(sample_data.payoffMonth)/profit_per_month), y: 0},
-                            {x: sample_data.endOfChart, y: calculateRealProfit(sample_data.endOfChart)},
+                            {x: props.construction_time, y: calculatePayoffPoint(props.construction_time)},
+                            {x: props.payOffMonth, y: calculateAfterFinishBuilding(props.payOffMonth)},
+                            {x: props.payOffMonth + Math.abs(calculateAfterFinishBuilding(props.payOffMonth)/props.profit_per_month), y: 0},
+                            {x: endOfChart, y: calculateRealProfit(endOfChart)},
                         ],
                         showLine: true
                     },
@@ -69,9 +75,9 @@ export const Chart = () => {
                         label: "Profit",
                         data: [
                             {x: 0, y: 0},
-                            {x: sample_data.finishBuilding, y: calculatePureProfit(sample_data.finishBuilding)},
-                            {x: sample_data.payoffMonth, y: calculatePureProfit(sample_data.payoffMonth)},
-                            {x: sample_data.endOfChart, y: calculatePureProfit(sample_data.endOfChart)}
+                            {x: props.construction_time, y: calculatePureProfit(props.construction_time)},
+                            {x: props.payOffMonth, y: calculatePureProfit(props.payOffMonth)},
+                            {x: endOfChart, y: calculatePureProfit(endOfChart)}
                         ],
                         showLine:true,
                         hidden: true

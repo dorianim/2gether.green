@@ -12,6 +12,7 @@ export interface ProjectDetails {
   payoff_time?: number;
   revenue_per_month?: number;
   total_cost?: number;
+  project_type?: string;
 }
 
 const projectDetailsMaps = {"construction_time": "Construction time", "cost_per_month": "Cost per month", "payoff_time": "Payoff time", "revenue_per_month": "Revenue per month", "total_cost": "Total cost" };

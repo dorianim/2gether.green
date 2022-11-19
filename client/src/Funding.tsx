@@ -1,4 +1,4 @@
-import { Card, CardContent, Typography } from "@mui/material";
+import { CostChart } from "./Chart";
 import Project from "./Project";
 import { ProjectDetails } from "./WaitForResponse";
 
@@ -14,6 +14,17 @@ export default function Funding(props: FundingProps) {
         return (<li>{props.projectDetailsMaps[key]}: {props.projectDetails[key as keyof ProjectDetails]}</li>);
     });
 
+    let partecipants = localStorage.getItem("partecipants");
+    if (partecipants == null) {
+        partecipants = Math.random() * 200 + "";
+        localStorage.setItem("partecipants", partecipants);
+    }
+    let progress = localStorage.getItem("progress");
+    if (progress == null) {
+        progress = Math.random() * 100 + "";
+        localStorage.setItem("progress", progress);
+    }
+
     console.log(list);
 
     return (
@@ -22,7 +33,8 @@ export default function Funding(props: FundingProps) {
             <ul>
                 {list}
             </ul>
-            <Project project={{name: "Hallo", progress: 3, participants: 65}} />
+            <Project project={{project_type: props.projectDetails.project_type, progress: parseInt(progress), participants: parseInt(partecipants), total_cost: props.projectDetails.total_cost!}} />
+            <CostChart payOffMonth={props.projectDetails.payoff_time!} cost_per_month={props.projectDetails.cost_per_month!} profit_per_month={props.projectDetails.revenue_per_month!} construction_time={props.projectDetails.construction_time!} ></CostChart>
         </div>
     )
 
