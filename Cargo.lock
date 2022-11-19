@@ -984,22 +984,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "hackatum-22"
-version = "0.1.0"
-dependencies = [
- "async-std",
- "migration",
- "reqwest",
- "rocket",
- "rust-embed",
- "sea-orm",
- "sea-orm-migration",
- "serde",
- "sha256",
- "uuid",
-]
-
-[[package]]
 name = "hashbrown"
 version = "0.12.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2645,6 +2629,22 @@ name = "tinyvec_macros"
 version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "cda74da7e1a664f795bb1f8a87ec406fb89a02522cf6e50620d016add6dbbf5c"
+
+[[package]]
+name = "together-green"
+version = "0.1.0"
+dependencies = [
+ "async-std",
+ "migration",
+ "reqwest",
+ "rocket",
+ "rust-embed",
+ "sea-orm",
+ "sea-orm-migration",
+ "serde",
+ "sha256",
+ "uuid",
+]
 
 [[package]]
 name = "tokio"
