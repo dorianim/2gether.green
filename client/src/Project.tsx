@@ -1,67 +1,65 @@
 import "./Projects.css";
 import * as React from "react";
-import Box from "@mui/joy/Box";
-import Slider from "@mui/joy/Slider";
-import LinearProgress from "@mui/joy/LinearProgress";
-import Button from "@mui/joy/Button";
+import { Box, Button, LinearProgress, Slider } from "@mui/material";
 
 interface ProjectProps {
-    project: Project
+  project: Project;
 }
 interface Project {
-    name: string,
-        progress: number,
-        participants: number,
+  name: string;
+  progress: number;
+  participants: number;
 }
 
 const marks = [
-    {
-      value: 10,
-      label: "10€",
-    },
-    {
-      value: 50,
-      label: "50€",
-    },
-    {
-      value: 100,
-      label: "100€",
-    },
-    {
-      value: 500,
-      label: "500€",
-    },
-    {
-      value: 1000,
-      label: "1000€",
-    },
-    {
-      value: 1500,
-      label: "1500€",
-    },
-    {
-      value: 2000,
-      label: "2000€",
-    },
-  ];
-  
-  function valueText(value: number) {
-    return `${value}€`;
-  }
-  
-  function handleSubmit() {
-    //TODO
-  }
+  {
+    value: 10,
+    label: "10€",
+  },
+  {
+    value: 50,
+    label: "50€",
+  },
+  {
+    value: 100,
+    label: "100€",
+  },
+  {
+    value: 500,
+    label: "500€",
+  },
+  {
+    value: 1000,
+    label: "1000€",
+  },
+  {
+    value: 1500,
+    label: "1500€",
+  },
+  {
+    value: 2000,
+    label: "2000€",
+  },
+];
 
+function valueText(value: number) {
+  return `${value}€`;
+}
+
+function handleSubmit() {
+  //TODO
+}
 
 export default function Project(props: ProjectProps) {
-    const project : Project = props.project;
-    const [progress, setProgress] = React.useState(25);
-    return (
-        <div> <div className="projectName">
+  const project: Project = props.project;
+  const [progress, setProgress] = React.useState(25);
+  return (
+    <div>
+      {" "}
+      <div className="projectName">
         <strong>{project.name}</strong>
       </div>
-      <LinearProgress determinate value={progress}></LinearProgress>
+      <LinearProgress value={progress}></LinearProgress>
       Progress: {project.progress}%<br />
       Participants: {project.participants}
       <br />
@@ -77,11 +75,10 @@ export default function Project(props: ProjectProps) {
         />
       </Box>
       <div className="submitButton">
-        <Button variant="solid" onClick={handleSubmit}>
+        <Button variant="contained" onClick={handleSubmit}>
           Submit
         </Button>
-      </div></div>
-           
-    )
+      </div>
+    </div>
+  );
 }
-

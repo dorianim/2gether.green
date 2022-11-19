@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from "react";
-import Alert from "@mui/joy/Alert";
-import IconButton from "@mui/joy/IconButton";
 import ReportIcon from "@mui/icons-material/Report";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
-import Typography from "@mui/joy/Typography";
-import List from "@mui/joy/List";
-import ListItem from "@mui/joy/ListItem";
-import { Grid } from "@mui/joy";
+import { Alert, Grid, List, ListItem, Typography } from "@mui/material";
+import CollapsableAlert from "./CollapsableAlert";
 export default function Developer() {
   interface Request {
     id: number;
@@ -56,39 +52,14 @@ export default function Developer() {
           ))}
       </List>
 
-      {success === false && (
-        <Alert
-          key={"Error"}
-          sx={{ alignItems: "flex-start" }}
-          startDecorator={React.cloneElement(<ReportIcon />, {
-            sx: { mt: "2px", mx: "4px" },
-            fontSize: "xl2",
-          })}
-          variant="soft"
-          color={"danger"}
-          endDecorator={
-            <IconButton
-              variant="soft"
-              size="sm"
-              color={"danger"}
-              onClick={() => {
-                setSuccess(true);
-              }}
-            >
-              <CloseRoundedIcon />
-            </IconButton>
-          }
-        >
-          <div>
-            <Typography fontWeight="lg" mt={0.25}>
-              {"Error"}
-            </Typography>
-            <Typography fontSize="sm" sx={{ opacity: 0.8 }}>
-              An Error occured :/
-            </Typography>
-          </div>
-        </Alert>
-      )}
+      <CollapsableAlert
+        error={{
+          open: success,
+          severity: "error",
+          message: "Something went wrong. Please try again later.",
+        }}
+        onClose={() => setSuccess(true)}
+      />
     </div>
   );
 }

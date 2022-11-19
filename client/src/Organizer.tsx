@@ -1,19 +1,25 @@
 import React from "react";
 import { useState } from "react";
-import { TextField, Button } from "@mui/joy/";
-import Autocomplete from "@mui/joy/Autocomplete";
 import { useNavigate } from "react-router-dom";
-import Alert from "@mui/joy/Alert";
-import IconButton from "@mui/joy/IconButton";
 import ReportIcon from "@mui/icons-material/Report";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
-import Typography from "@mui/joy/Typography";
 import "./Organizer.css";
+import {
+  Alert,
+  Autocomplete,
+  AutocompleteRenderInputParams,
+  Button,
+  IconButton,
+  TextField,
+  Typography,
+} from "@mui/material";
+import CollapsableAlert from "./CollapsableAlert";
 
 export default function Organzier() {
   const [zipCode, setZipCode] = useState(0);
   const [category, setCategory] = useState("");
   const [success, setSuccess] = useState(true);
+
   const navigate = useNavigate();
   const handleSubmit = async () => {
     let successful: boolean = true;
@@ -63,47 +69,28 @@ export default function Organzier() {
         <Autocomplete
           options={["Windmill", "Solar power plant"]}
           onChange={(e, value) => setCategory(value ?? "")}
+          renderInput={function (
+            params: AutocompleteRenderInputParams
+          ): React.ReactNode {
+            throw new Error("Function not implemented.");
+          }}
         />
       </div>
 
       <div className="submitButton">
-        <Button variant="solid" onClick={handleSubmit}>
+        <Button variant="contained" onClick={handleSubmit}>
           Request offer
         </Button>
       </div>
-      {success === false && (
-        <Alert
-          key={"Error"}
-          sx={{ alignItems: "flex-start" }}
-          startDecorator={React.cloneElement(<ReportIcon />, {
-            sx: { mt: "2px", mx: "4px" },
-            fontSize: "xl2",
-          })}
-          variant="soft"
-          color={"danger"}
-          endDecorator={
-            <IconButton
-              variant="soft"
-              size="sm"
-              color={"danger"}
-              onClick={() => {
-                setSuccess(true);
-              }}
-            >
-              <CloseRoundedIcon />
-            </IconButton>
-          }
-        >
-          <div>
-            <Typography fontWeight="lg" mt={0.25}>
-              {"Error"}
-            </Typography>
-            <Typography fontSize="sm" sx={{ opacity: 0.8 }}>
-              An Error occured :/
-            </Typography>
-          </div>
-        </Alert>
-      )}
+
+      <CollapsableAlert
+        error={{
+          open: success,
+          severity: "error",
+          message: "Something went wrong. Please try again later.",
+        }}
+        onClose={() => setSuccess(true)}
+      />
     </div>
   );
 }
