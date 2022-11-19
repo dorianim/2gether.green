@@ -1,24 +1,30 @@
 import React from "react";
 import { useState } from "react";
-import { TextField, Button } from "@mui/joy/";
-import Autocomplete from "@mui/joy/Autocomplete";
 import { useNavigate } from "react-router-dom";
-import Alert from "@mui/joy/Alert";
-import IconButton from '@mui/joy/IconButton';
-import ReportIcon from '@mui/icons-material/Report';
-import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
-import Typography from '@mui/joy/Typography';
+import ReportIcon from "@mui/icons-material/Report";
+import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import "./Organizer.css";
-//postleitzahl
-//typ
+import {
+  Alert,
+  Autocomplete,
+  AutocompleteRenderInputParams,
+  Button,
+  IconButton,
+  MenuItem,
+  Select,
+  TextField,
+  Typography,
+} from "@mui/material";
+import CollapsableAlert from "./CollapsableAlert";
 
 export default function Organzier() {
   const [zipCode, setZipCode] = useState(0);
   const [category, setCategory] = useState("");
- const [success, setSuccess] = useState(true);
+  const [success, setSuccess] = useState(true);
+
   const navigate = useNavigate();
   const handleSubmit = async () => {
-    let successful : boolean = true;
+    let successful: boolean = true;
     const requestOptions = {
       method: "POST",
       body: JSON.stringify({
@@ -27,21 +33,20 @@ export default function Organzier() {
       }),
     };
     try {
-const response = await fetch(
-      "http://localhost:8000/api/v1/project/",
-      requestOptions
-    )
-    if (!response.ok){
-     successful = false;
-    }
+      const response = await fetch(
+        "http://localhost:8000/api/v1/project/",
+        requestOptions
+      );
+      if (!response.ok) {
+        successful = false;
+      }
     } catch (e) {
       console.log(e);
       successful = false;
     }
-    console.log()
-    
-    
-    if (!successful){
+    console.log();
+
+    if (!successful) {
       setSuccess(false);
     }
     if (successful) {
@@ -63,41 +68,26 @@ const response = await fetch(
       />
       <div className="select">
         Category:
-        <Autocomplete
-          options={["Windmill", "Solar power plant"]}
-          onChange={(e, value) => setCategory(value ?? "")}
-        />
+        <Select onChange={(e) => setCategory(e.target.value as string)}>
+          <MenuItem value="Windmill">Windmill</MenuItem>
+          <MenuItem value="Solar">Solar panel</MenuItem>
+        </Select>
       </div>
 
       <div className="submitButton">
-        <Button variant="solid" onClick={handleSubmit}>
+        <Button variant="contained" onClick={handleSubmit}>
           Request offer
         </Button>
       </div>
-      {success === false && <Alert
-          key={"Error"}
-          sx={{ alignItems: 'flex-start' }}
-          startDecorator={React.cloneElement(<ReportIcon />, {
-            sx: { mt: '2px', mx: '4px' },
-            fontSize: 'xl2',
-          })}
-          variant="soft"
-          color={'danger'}
-          endDecorator={
-            <IconButton variant="soft" size="sm" color={'danger'} onClick={() => {setSuccess(true);}}>
-              <CloseRoundedIcon />
-            </IconButton>
-          }
-        >
-          <div>
-            <Typography fontWeight="lg" mt={0.25}>
-              {"Error"}
-            </Typography>
-            <Typography fontSize="sm" sx={{ opacity: 0.8 }}>
-              An Error occured :/
-            </Typography>
-          </div>
-        </Alert>}
+
+      <CollapsableAlert
+        error={{
+          open: !success,
+          severity: "error",
+          message: "Something went wrong. Please try again later.",
+        }}
+        onClose={() => setSuccess(true)}
+      />
     </div>
   );
 }
