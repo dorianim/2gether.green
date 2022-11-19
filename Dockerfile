@@ -1,4 +1,4 @@
-FROM rust:1.64.0-alpine3.16 as build
+FROM rust:1.65-alpine3.16 as build
 
 WORKDIR /build
 COPY . .
