@@ -1,0 +1,27 @@
+.header-container {
+    gap: 40px;
+    flex-direction: row;
+  }
+  
+  .header-icon {
+    height: 72px;
+    display: block;
+  }
+  
+  .MuiStepIcon-root.Mui-active {
+    color: #5e81ac !important;
+  }
+  
+  .MuiStepIcon-root.Mui-completed {
+    color: #a3be8c !important;
+    background-color: white;
+    border-radius: 100%;
+  }
+  
+  .MuiStepLabel-label {
+    color: #2e3440 !important;
+  }
+  
+  .MuiStepConnector-line {
+    border-color: #2e3440 !important;
+  }

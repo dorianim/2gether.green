@@ -16,6 +16,7 @@ import Developer from "./Developer";
 import PageContainer from "./PageContainer";
 import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import { lightGreen } from "@mui/material/colors";
+import Header from "./Header";
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 
 export const darkTheme = createTheme({
@@ -30,10 +31,11 @@ export const darkTheme = createTheme({
 root.render(
   <div className="root-div">
     <React.StrictMode>
-      <PageContainer>
-        <ThemeProvider theme={darkTheme}>
-          <CssBaseline />
-          <HashRouter>
+      <HashRouter>
+        <Header />
+        <PageContainer>
+          <ThemeProvider theme={darkTheme}>
+            <CssBaseline />
             <Routes>
               <Route path="/projects" element={<Projects />} />
               <Route path="/organize" element={<Organzier />} />
@@ -41,9 +43,9 @@ root.render(
               <Route path="/project/:projectId" element={<WaitForResponse />} />
               <Route path="/" element={<Home />} />
             </Routes>
-          </HashRouter>
-        </ThemeProvider>
-      </PageContainer>
+          </ThemeProvider>
+        </PageContainer>
+      </HashRouter>
     </React.StrictMode>
   </div>
 );
