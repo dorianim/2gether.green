@@ -115,11 +115,16 @@ async fn update_project_status(
     project_update_request: Json<ProjectStatusUpdateRequest>,
     db: &State<DatabaseConnection>,
 ) -> Result<Status, Status> {
+    let project = get_project_by_id(db, &project_id).await?;
+
     let updated_model = match project_update_request.0 {
         ProjectStatusUpdateRequest::Approved(data) => {
-            if data.total_cost <= 30000 {
+            if project.status != ProjectStatus::WaitingForApproval.to_string()
+                || data.total_cost <= 30000
+            {
                 return Err(Status::NotAcceptable);
             }
+
             model::project::ActiveModel {
                 id: Set(project_id),
                 status: Set(ProjectStatus::Approved.to_string()),
@@ -129,12 +134,22 @@ async fn update_project_status(
                 ..Default::default()
             }
         }
-        ProjectStatusUpdateRequest::Rejected => model::project::ActiveModel {
-            id: Set(project_id),
-            status: Set(ProjectStatus::Rejected.to_string()),
-            ..Default::default()
-        },
+        ProjectStatusUpdateRequest::Rejected => {
+            if project.status != ProjectStatus::WaitingForApproval.to_string() {
+                return Err(Status::NotAcceptable);
+            }
+
+            model::project::ActiveModel {
+                id: Set(project_id),
+                status: Set(ProjectStatus::Rejected.to_string()),
+                ..Default::default()
+            }
+        }
         ProjectStatusUpdateRequest::Funding(data) => {
+            if project.status != ProjectStatus::Approved.to_string() {
+                return Err(Status::NotAcceptable);
+            }
+
             let morgage_rate =
                 get_morgage_offer(project_id.to_owned(), data.amortisation, db).await?;
             model::project::ActiveModel {
@@ -195,6 +210,21 @@ async fn get_morgage_offer(
     .unwrap();
 
     Ok(morgage_rate[0].clone())
+}
+
+async fn get_project_by_id(
+    db: &State<DatabaseConnection>,
+    id: &str,
+) -> Result<model::project::Model, Status> {
+    let db = db as &DatabaseConnection;
+    let res = model::project::Entity::find_by_id(id.to_owned())
+        .one(db)
+        .await
+        .unwrap();
+    if res.is_none() {
+        return Err(Status::NotFound);
+    }
+    Ok(res.unwrap())
 }
 
 pub fn routes() -> Vec<rocket::Route> {
