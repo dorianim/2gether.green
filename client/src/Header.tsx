@@ -37,7 +37,6 @@ export default function Header() {
     <AppBar
       position="sticky"
       sx={{
-        display: location.pathname === "/" ? "none" : undefined,
         background: "#ffffff",
       }}
     >

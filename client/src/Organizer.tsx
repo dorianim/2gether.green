@@ -60,8 +60,17 @@ export default function Organzier() {
   };
 
   return (
-    <Grid container sx={{ paddingTop: 2 }}>
-      <Grid item xs={12} sx={{ paddingBottom: 2 }}>
+    <Grid
+      container
+      sx={{
+        paddingTop: 2,
+        justifyContent: "center",
+        width: "50%",
+        alignSelf: "center",
+        margin: "auto",
+      }}
+    >
+      <Grid item xs={12} sx={{ paddingBottom: 2, textAlign: "center" }}>
         <Typography variant="h4">Organize a project</Typography>
       </Grid>
 
@@ -86,7 +95,7 @@ export default function Organzier() {
         />
       </Grid>
 
-      <Grid item xs={6} sx={{ paddingBottom: 2, paddingRight: 2 }}>
+      <Grid item xs={12} sx={{ paddingBottom: 2 }}>
         <TextField
           label="Zip code"
           placeholder="00000"
@@ -97,7 +106,7 @@ export default function Organzier() {
         />
       </Grid>
 
-      <Grid item xs={6} sx={{ paddingBottom: 2 }}>
+      <Grid item xs={12} sx={{ paddingBottom: 2 }}>
         <FormControl fullWidth>
           <InputLabel id="category-select-label">Category</InputLabel>
 
