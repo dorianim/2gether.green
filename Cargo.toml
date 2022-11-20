@@ -14,7 +14,7 @@ rocket = { version = "^0.5.0-rc.2", features = ["json"] }
 serde = { version = "1.0", features = ["derive"] }
 rust-embed = "6.4.2"
 uuid = "1.2.2"
-reqwest = { version = "0.11.13", features = ["json"] }
+reqwest = { version = "0.11.13", features = ["json", "rustls-tls", "trust-dns"] }
 sha256 = "1.1.1"
 
 [dependencies.migration]
