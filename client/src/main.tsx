@@ -3,7 +3,6 @@ import ReactDOM from "react-dom/client";
 import Home from "./Home";
 import "@fontsource/public-sans";
 import "./main.css";
-import Projects from "./Projects";
 import Organzier from "./Organizer";
 import WaitForResponse from "./WaitForResponse";
 import {
@@ -39,7 +38,6 @@ root.render(
           <ThemeProvider theme={darkTheme}>
             <CssBaseline />
             <Routes>
-              <Route path="/projects" element={<Projects />} />
               <Route path="/organize" element={<Organzier />} />
               <Route path="/developer" element={<Developer />} />
               <Route path="/join" element={<JoinProject />} />

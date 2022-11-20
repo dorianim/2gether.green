@@ -57,7 +57,7 @@ export default function WaitForResponse() {
 
   const handleCalculate = async () => {
     fetch(
-      `${BASE_URL}/${projectId}/morgage_rate?amortisation=${amortisation.current}`
+      `${BASE_URL}/project/${projectId}/morgage_rate?amortisation=${amortisation.current}`
     )
       .then(async (response) => {
         if (response.ok) {
