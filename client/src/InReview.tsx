@@ -5,6 +5,7 @@ import TimelineSeparator from "@mui/lab/TimelineSeparator";
 import TimelineConnector from "@mui/lab/TimelineConnector";
 import TimelineContent from "@mui/lab/TimelineContent";
 import TimelineDot from "@mui/lab/TimelineDot";
+import { Link } from "react-router-dom";
 
 export default function InReview(props: { handleRefresh: () => void }) {
   const handleRefresh = props.handleRefresh;
@@ -79,6 +80,9 @@ export default function InReview(props: { handleRefresh: () => void }) {
           Refresh
         </Button>
       </Grid>
+      <div style={{ position: "absolute", bottom: "0", marginBottom: "16px", color: "#8b949e" }}>
+       <Typography variant="body1">Note: For demo purposes you can accept your own Project <Link to="/developer">here</Link></Typography>
+      </div>
     </Grid>
   );
 }
