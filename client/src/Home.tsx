@@ -3,12 +3,15 @@ import { useNavigate } from "react-router-dom";
 import { IconButton, Grid, TextField, Typography, Button } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
-import { Link } from "react-router-dom";
 function App() {
   const navigate = useNavigate();
 
-  const handleStart = () => {
+  const handleStartOrganize = () => {
     navigate("/organize");
+  };
+
+  const handleStartJoin = () => {
+    navigate("/join");
   };
 
   return (
@@ -26,7 +29,7 @@ function App() {
               Let's create clean energy together!
             </Typography>
           </Grid>
-          <Grid item style={{ paddingTop: "20px" }}>
+          <Grid item style={{ paddingTop: "15px" }}>
             <Typography variant="body1" component="div">
               Renewable and sustainable enery is more important than ever
               before. Our goal: make it easy for everyone to invest in clean
@@ -38,15 +41,20 @@ function App() {
               style={{
                 alignItems: "left",
                 width: "100%",
-                paddingTop: "30px",
+                paddingTop: "15px",
                 marginLeft: "0",
               }}
             >
-              <Link to="/organize">
-                <Button size="large" variant="contained" fullWidth>
-                  <Typography color={"black"}>Become one of us</Typography>
+             
+                <Button size="large" variant="contained" fullWidth onClick={handleStartOrganize}>
+                  <Typography color={"black"}>Create your own project</Typography>
                 </Button>
-              </Link>
+                <div style={{paddingTop: "8px"}}>
+                  <Button size="large" variant="contained" fullWidth onClick={handleStartJoin}>
+                  <Typography color={"black"}>Join other projects</Typography>
+                </Button>
+                </div>
+                
             </div>
           </Grid>
         </Grid>
