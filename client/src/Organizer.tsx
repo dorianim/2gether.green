@@ -19,6 +19,7 @@ import {
   Typography,
 } from "@mui/material";
 import CollapsableAlert from "./CollapsableAlert";
+import { BASE_URL } from "./Api";
 
 export default function Organzier() {
   const [zipCode, setZipCode] = useState(0);
@@ -37,10 +38,7 @@ export default function Organzier() {
       }),
     };
     try {
-      const response = await fetch(
-        "http://localhost:8000/api/v1/project/",
-        requestOptions
-      );
+      const response = await fetch(`${BASE_URL}/project`, requestOptions);
       if (!response.ok) {
         successful = false;
       }
@@ -124,7 +122,7 @@ export default function Organzier() {
             label="Category"
             fullWidth
           >
-            <MenuItem value="Windturbine">Wind turbine</MenuItem>
+            <MenuItem value="Wind">Wind turbine</MenuItem>
             <MenuItem value="Solar">Solar panel</MenuItem>
           </Select>
         </FormControl>

@@ -121,6 +121,19 @@ export default function FundingConfiguration(props: {
           Begin funding
         </Button>
       </Grid>
+
+      <Grid item>
+        <Typography variant="body1">
+          <b>
+            Data provided by <a href="interhyp.de">Interhyp</a>
+          </b>
+          , contact them{" "}
+          <a href="https://www.interhyp.de/zins-check#(zinscheck:kontaktformular)">
+            here
+          </a>
+          .
+        </Typography>
+      </Grid>
     </Grid>
   );
 }
