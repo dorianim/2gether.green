@@ -11,6 +11,7 @@ interface Project {
   progress: number;
   participants: number;
   total_cost: number;
+  handleInvestmentChange: (amount: number) => void;
 }
 
 const marks = [
@@ -73,7 +74,10 @@ export default function Project(props: ProjectProps) {
           step={10}
           valueLabelDisplay="auto"
           marks={marks}
-          onChange={(event, value) => investment.current = value as number}
+          onChange={(event, value) => {
+            props.project.handleInvestmentChange(value as number);
+            return investment.current = value as number
+          }}
           min={100}
           max={2000}
         />
