@@ -1,14 +1,4 @@
-import {
-  AppBar,
-  Toolbar,
-  Stepper,
-  Step,
-  Box,
-  Container,
-  StepButton,
-  Typography,
-  Button,
-} from "@mui/material";
+import { AppBar, Toolbar, Container, Typography, Tooltip } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
@@ -50,7 +40,14 @@ export default function Header() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             .
           </Typography>
-          <img src="/images/oekostrom.svg" style={{ height: "50px" }} />
+          <Tooltip title="Our hoster Netcup runs their servers on 100% green energy!">
+            <a
+              href="https://www.netcup.eu/ueber-netcup/oekostrom.php"
+              target="_blank"
+            >
+              <img src="/images/oekostrom.svg" style={{ height: "50px" }} />
+            </a>
+          </Tooltip>
         </Toolbar>
       </Container>
     </AppBar>
