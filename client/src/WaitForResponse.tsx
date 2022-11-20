@@ -91,7 +91,6 @@ export default function WaitForResponse() {
       .then(async (response) => {
         console.log(response);
         if (response.ok) {
-          // let data = await response.json();
           setProjectDetails({ ...projectDetails, status: "Funding" });
           setSuccess(true);
         } else {

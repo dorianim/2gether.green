@@ -1,6 +1,6 @@
 import "./Projects.css";
 import * as React from "react";
-import { Box, Button, LinearProgress, Slider } from "@mui/material";
+import { Box, Button, LinearProgress, Slider, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 interface ProjectProps {
@@ -56,17 +56,14 @@ export default function Project(props: ProjectProps) {
   }
 
   return (
-    <div>
-      {" "}
-      <div className="projectName">
-        <strong>{project.project_type}</strong>
-      </div>
-      <LinearProgress variant="determinate" value={progress}></LinearProgress>
-      Progress: {progress.toFixed(2)}%<br />
-      Participants: {project.participants}
-      <br />
-      How much do you want to invest? (monthly)
-      <Box sx={{ width: 300 }}>
+    <div style={{marginTop: "10px"}}>
+      <Typography variant="h5">
+        {project.project_type}
+      </Typography>
+      <LinearProgress style={{marginBottom: "16px"}} variant="determinate" value={progress}></LinearProgress>
+      <Typography>Progress: {progress.toFixed(2)}%&nbsp;Participants: {project.participants}</Typography>
+      <Typography>How much do you want to invest? (monthly) </Typography>
+      <Box>
         <Slider
           aria-label="Custom marks"
           defaultValue={20}
@@ -78,6 +75,7 @@ export default function Project(props: ProjectProps) {
             props.project.handleInvestmentChange(value as number);
             return investment.current = value as number
           }}
+          style={{ width: "100%" }}
           min={100}
           max={2000}
         />
