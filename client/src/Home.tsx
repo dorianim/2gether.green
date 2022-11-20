@@ -71,7 +71,7 @@ function App() {
             />
             <h3>Defusing the energy crisis</h3>
             Through the promotion and through the simplification of the
-            production of sustainable energy, cheap and sustainable energy can
+            production of sustainable energy, cheap and clean energy can
             be guaranteed for everyone in the future!
           </Grid>
           <Grid item xs={4}>
@@ -87,7 +87,7 @@ function App() {
               sx={{ fontSize: 50, color: "lightgreen" }}
             />
             <h3>Invest in our future</h3>
-            Investing in the generation of sustainable energy always pays off,
+            Investing in the production of sustainable energy always pays off,
             and particularly financially, thus offering an excellent investment
             in your financial future!
           </Grid>
@@ -110,7 +110,7 @@ function App() {
             lack of financing options and more ensure that very few households
             actually decide to install a solar system. As a result, less than 9%
             of electricity generation in Germany comes from solar systems. Not
-            to mention wind turbines. for private individuals, investing in a
+            to mention wind turbines: for private individuals, investing in a
             wind turbine is almost impossible due to financial, regulatory and
             space constraints.
           </Grid>
@@ -127,8 +127,8 @@ function App() {
             ongoing project or by making your own request for a collaborative
             project! You can invest as little as 100€ per month, but of course
             we also provide you with easy and uncomplicated contact to credit
-            institutions to boost your investment! And most important: you are
-            all part of the project and YOU decide what will be done!
+            institutions to boost your investment! Most importantly, 
+            you are all part of the project and YOU decide what will be done!
           </Grid>
 
           <Grid item xs={4}>
