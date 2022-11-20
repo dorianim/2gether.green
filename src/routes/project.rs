@@ -6,7 +6,7 @@ use rocket::serde::json::Json;
 use rocket::*;
 use sea_orm::strum::Display;
 use sea_orm::ActiveValue::Set;
-use sea_orm::{DatabaseConnection, EntityTrait};
+use sea_orm::{DatabaseConnection, EntityTrait, QueryFilter};
 use uuid::Uuid;
 
 #[derive(Serialize)]
@@ -58,12 +58,17 @@ enum ProjectStatusUpdateRequest {
     Funding(ProjectFundingStarted),
 }
 
-#[get("/")]
+#[get("/?<zip_code>")]
 async fn get_all_projects(
+    zip_code: u32,
     db: &State<DatabaseConnection>,
 ) -> Result<Json<Vec<model::project::Model>>, Status> {
     let db = db as &DatabaseConnection;
-    let projects = model::project::Entity::find().all(db).await.unwrap();
+    let projects = model::project::Entity::find()
+        .filter(model::project::Column::ZipCode.eq(5))
+        .all(db)
+        .await
+        .unwrap();
     Ok(Json(projects))
 }
 

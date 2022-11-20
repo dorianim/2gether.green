@@ -47,6 +47,13 @@ fn client_assets(file: PathBuf) -> Option<(ContentType, Cow<'static, [u8]>)> {
     ))
 }
 
+#[get("/images/<file..>")]
+fn client_images(file: PathBuf) -> Option<(ContentType, Cow<'static, [u8]>)> {
+    get_client_file(PathBuf::from(
+        "images/".to_string() + &file.display().to_string(),
+    ))
+}
+
 pub fn routes() -> Vec<rocket::Route> {
-    routes![index, client_root, client_assets]
+    routes![index, client_root, client_assets, client_images]
 }

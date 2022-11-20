@@ -5,6 +5,7 @@ import Funding from "./Funding";
 import CollapseAlert from "./CollapsableAlert";
 import InReview from "./InReview";
 import FundingConfiguration from "./FundingConfigutation";
+import { BASE_URL } from "./Api";
 
 export interface ProjectDetails {
   id?: string;
@@ -37,7 +38,7 @@ export default function WaitForResponse() {
   }, []);
 
   const handleRefresh = async () => {
-    fetch("http://localhost:8000/api/v1/project/" + projectId)
+    fetch(`${BASE_URL}/project/${projectId}`)
       .then(async (response) => {
         if (response.ok) {
           let data = await response.json();
@@ -55,10 +56,7 @@ export default function WaitForResponse() {
 
   const handleCalculate = async () => {
     fetch(
-      "http://localhost:8000/api/v1/project/" +
-        projectId +
-        "/morgage_rate?amortisation=" +
-        amortisation.current
+      `${BASE_URL}/${projectId}/morgage_rate?amortisation=${amortisation.current}`
     )
       .then(async (response) => {
         if (response.ok) {
@@ -79,7 +77,7 @@ export default function WaitForResponse() {
   };
 
   const handleBeginFunding = async () => {
-    fetch("http://localhost:8000/api/v1/project/" + projectId, {
+    fetch(`${BASE_URL}/project/${projectId}`, {
       method: "PATCH",
       body: JSON.stringify({
         status: "Funding",

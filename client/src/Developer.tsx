@@ -8,6 +8,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import OwnDialog from "./OwnDialog";
 import { Clear, Done } from "@mui/icons-material";
+import { BASE_URL } from "./Api";
 
 export default function Developer() {
   interface Request {
@@ -49,10 +50,7 @@ export default function Developer() {
         revenue_per_month,
       }),
     };
-    await fetch(
-      `http://localhost:8000/api/v1/project/${current_project_id}`,
-      requestOptions
-    )
+    await fetch(`${BASE_URL}/project/${current_project_id}`, requestOptions)
       .then((res) => {
         if (res.status >= 400 && res.status < 600) {
           setSuccess(false);
@@ -67,7 +65,7 @@ export default function Developer() {
   };
 
   const getOpenRequests = async () => {
-    await fetch("http://localhost:8000/api/v1/project/")
+    await fetch(`${BASE_URL}/project/`)
       .then((res) => {
         if (res.status >= 400 && res.status < 600) {
           setSuccess(false);
@@ -96,10 +94,7 @@ export default function Developer() {
         status: "Rejected",
       }),
     };
-    await fetch(
-      `http://localhost:8000/api/v1/project/${request_id}`,
-      requestOptions
-    )
+    await fetch(`${BASE_URL}/project/${request_id}`, requestOptions)
       .then((res) => {
         if (res.status >= 400 && res.status < 600) {
           setSuccess(false);
