@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { IconButton, Grid, TextField, Typography, Button } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 function App() {
   const navigate = useNavigate();
 
@@ -26,17 +26,28 @@ function App() {
               Let's create clean energy together!
             </Typography>
           </Grid>
-          <Grid item style={{paddingTop: "20px"}}>
+          <Grid item style={{ paddingTop: "20px" }}>
             <Typography variant="body1" component="div">
               Renewable and sustainable enery is more important than ever
               before. Our goal: make it easy for everyone to invest in clean
               energy projects.
             </Typography>
           </Grid>
-          <Grid item style={{width: "100%"}}>
-           <div style={{alignItems: "left", width: "100%", paddingTop: "30px", marginLeft: "0"}}>
-             <Button size="large" variant="contained" fullWidth ><Link to="/organize"><Typography color={"black"}>Become one of us</Typography></Link></Button>
-           </div>
+          <Grid item style={{ width: "100%" }}>
+            <div
+              style={{
+                alignItems: "left",
+                width: "100%",
+                paddingTop: "30px",
+                marginLeft: "0",
+              }}
+            >
+              <Link to="/organize">
+                <Button size="large" variant="contained" fullWidth>
+                  <Typography color={"black"}>Become one of us</Typography>
+                </Button>
+              </Link>
+            </div>
           </Grid>
         </Grid>
       </Grid>
@@ -117,7 +128,13 @@ function App() {
           </Grid>
         </Grid>
       </div>
-      <div style={{ marginTop: "130px", margin: "120px auto 40px auto", textAlign: "center" }}>
+      <div
+        style={{
+          marginTop: "130px",
+          margin: "120px auto 40px auto",
+          textAlign: "center",
+        }}
+      >
         <a href="https://github.com/dorianim/2gether.green" target="_blank">
           <IconButton>
             <div style={{ width: "30px", height: "30px" }}>
