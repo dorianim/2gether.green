@@ -4,17 +4,19 @@ version = "0.1.0"
 edition = "2021"
 build = "build.rs"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[[bin]]
+name = "together-green"
+path = "src/main.rs"
 
 [dependencies]
 async-std = { version = "^1", features = ["attributes", "tokio1"] }
-sea-orm = { version = "^0.10.0", features = [ "sqlx-sqlite", "runtime-async-std-native-tls", "macros" ] }
+sea-orm = { version = "^0", default_features = false, features = [ "sqlx", "sqlx-sqlite", "runtime-async-std-native-tls", "macros" ] }
 sea-orm-migration = "^0.10.0"
 rocket = { version = "^0.5.0-rc.2", features = ["json"] }
 serde = { version = "1.0", features = ["derive"] }
 rust-embed = "6.4.2"
-uuid = "1.2.2"
-reqwest = { version = "0.11.13", features = ["json", "rustls-tls", "trust-dns"] }
+uuid = { version = "1.2.2", features = ["serde", "v4"] }
+reqwest = { version = "0.11.13", default_features = false, features = ["json", "rustls-tls", "trust-dns"] }
 sha256 = "1.1.1"
 
 [dependencies.migration]
