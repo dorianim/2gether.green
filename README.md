@@ -1,5 +1,5 @@
 <h1 align="center">
-    2gether.green (hackaTUM 2022)
+    2gether.green (hackaTUM Winner 2022)
 </h1>
 
 <p align="center">
