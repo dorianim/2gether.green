@@ -4,6 +4,7 @@ WORKDIR /build
 COPY . .
 RUN cargo fetch
 RUN apk add --no-cache build-base nodejs yarn pkgconfig openssl-dev ca-certificates
+RUN rustup target add x86_64-unknown-linux-gnu
 RUN RUSTFLAGS='-C target-feature=+crt-static' cargo build --release --target x86_64-unknown-linux-gnu --bin together-green
 
 FROM scratch
